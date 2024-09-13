@@ -14,7 +14,7 @@ Toliau, gijos ir atsakymai bus vadinami įrašais.
 - Narys gali sukurti, redaguoti arba ištrinti **tik savo** įrašus arba komentarus.
 - Narys gali laisvai redaguoti savo profilį ir turėti profilinę nuotrauką, viršelį bei aprašymą.
 - Administratorius gali laisvai redaguoti arba ištrinti **visus** įrašus bei valdyti gijų privilegijas, tiesiogiai valdyti vartotojų statusus.
-- Administratorius savo nuožiūra turi teisę vartotojus nutildyti tam tikram laiko momentui, neleisti jiems matyti tam tikrų gijų bei uždrausti jų IP adresus.
+- Administratorius savo nuožiūra turi teisę vartotojus nutildyti tam tikram laikotarpiui, neleisti jiems matyti tam tikrų gijų bei uždrausti jų IP adresus.
 ### Naudojamos technologijos
 Front-end: React.js
 
