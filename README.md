@@ -16,8 +16,8 @@ Toliau, gijos ir atsakymai bus vadinami įrašais.
 - Administratorius gali laisvai redaguoti arba ištrinti **visus** įrašus bei valdyti gijų privilegijas, tiesiogiai valdyti vartotojų statusus.
 - Administratorius savo nuožiūra turi teisę vartotojus nutildyti tam tikram laikotarpiui, neleisti jiems matyti tam tikrų gijų bei uždrausti jų IP adresus.
 ### Naudojamos technologijos
-Front-end: React.js
+Front-end: JavaScript (Vue)
 
-Back-end: C#
+Back-end: C# (ASP.NET)
 
 DB: MySQL
