@@ -20,4 +20,4 @@ Front-end: JavaScript (Vue)
 
 Back-end: C# (ASP.NET)
 
-DB: MySQL
+DBMS: MariaDB
