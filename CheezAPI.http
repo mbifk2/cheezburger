@@ -1,0 +1,6 @@
+@CheezAPI_HostAddress = http://localhost:5145
+
+GET {{CheezAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
