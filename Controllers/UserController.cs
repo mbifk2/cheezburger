@@ -25,6 +25,7 @@ namespace CheezAPI.Controllers
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
+
             return Ok(users.Select(u => new UserDto
             {
                 UserID = u.UserID,

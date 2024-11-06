@@ -29,8 +29,14 @@
 
         public class TopicDto
         {
-            public int TopicID { get; set; }
             public string Title { get; set; }
+            public string Description { get; set; }
+            public DateTime CreatedAt { get; set; }
+        }
+
+        public class TopicCreateDto {
+            public string Title { get; set; }
+            public string Description { get; set; }
         }
 
         public class FthreadDto
