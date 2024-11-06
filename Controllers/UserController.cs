@@ -41,7 +41,7 @@ namespace CheezAPI.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
             return Ok(new UserDto
             {
@@ -99,7 +99,7 @@ namespace CheezAPI.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             // Update fields if provided
@@ -118,7 +118,7 @@ namespace CheezAPI.Controllers
             // Save changes
             await _context.SaveChangesAsync();
 
-            return NoContent();  // 204 No Content on successful update
+            return NoContent();
         }
 
         // DELETE: api/v1/users/{id} 204 No Content
@@ -128,7 +128,7 @@ namespace CheezAPI.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             _context.Users.Remove(user);

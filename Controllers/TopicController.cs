@@ -31,8 +31,6 @@ namespace CheezAPI.Controllers
                 Description = t.Description,
                 CreatedAt = t.CreatedAt
             }));
-
-
         }
 
         //GET: api/v1/topics/{id} 200 OK
@@ -42,7 +40,7 @@ namespace CheezAPI.Controllers
             var topic = await _context.Topics.FindAsync(id);
             if (topic == null)
             {
-                return NotFound();
+                return NotFound("Topic not found");
             }
             return Ok(new TopicDto
             {
@@ -89,26 +87,28 @@ namespace CheezAPI.Controllers
 
         //PUT: api/v1/topics/{id} 204 No Content
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTopic(int id, TopicCreateDto topicCreateDto)
+        public async Task<IActionResult> PutTopic(int id, TopicUpdateDto topicUpdateDto)
         {
             var topic = await _context.Topics.FindAsync(id);
             if (topic == null)
             {
-                return NotFound();
+                return NotFound("Topic not found.");
             }
 
-            if (string.IsNullOrEmpty(topicCreateDto.Title))
+            if (topicUpdateDto.Title != null)
             {
-                return BadRequest("Topic needs a title.");
+                topic.Title = topicUpdateDto.Title;
             }
 
-            if (string.IsNullOrEmpty(topicCreateDto.Description))
+            if (topicUpdateDto.Description != null)
             {
-                topic.Description = "No description provided.";
+                topic.Description = topicUpdateDto.Description;
             }
 
-            topic.Title = topicCreateDto.Title;
-            topic.Description = topicCreateDto.Description;
+            if (topicUpdateDto.IsHidden != null)
+            {
+                topic.IsHidden = topicUpdateDto.IsHidden.Value;
+            }
 
             await _context.SaveChangesAsync();
 
@@ -122,7 +122,7 @@ namespace CheezAPI.Controllers
             var topic = await _context.Topics.FindAsync(id);
             if (topic == null)
             {
-                return NotFound();
+                return NotFound("Topic not found.");
             }
 
             _context.Topics.Remove(topic);

@@ -85,8 +85,8 @@
         "IsRequired": true
       },
       {
-        "Name": "topicCreateDto",
-        "Type": "CheezAPI.Dtos\u002BTopicCreateDto",
+        "Name": "topicUpdateDto",
+        "Type": "CheezAPI.Dtos\u002BTopicUpdateDto",
         "IsRequired": true
       }
     ],
@@ -100,6 +100,317 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.FthreadController",
+    "Method": "GetFthreads",
+    "RelativePath": "api/v1/topics/{TopicID}/threads",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CheezAPI.Dtos\u002BFthreadDto, CheezAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.FthreadController",
+    "Method": "PostThread",
+    "RelativePath": "api/v1/topics/{TopicID}/threads",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "fthreadCreateDto",
+        "Type": "CheezAPI.Dtos\u002BFthreadCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CheezAPI.Dtos\u002BFthreadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.FthreadController",
+    "Method": "GetThread",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CheezAPI.Dtos\u002BFthreadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.FthreadController",
+    "Method": "PutThread",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "fthreadUpdateDto",
+        "Type": "CheezAPI.Dtos\u002BFthreadUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CheezAPI.Dtos\u002BFthreadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.FthreadController",
+    "Method": "DeleteThread",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.PostController",
+    "Method": "GetPosts",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{ThreadID}/posts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "ThreadID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CheezAPI.Dtos\u002BPostGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.PostController",
+    "Method": "PostPost",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{ThreadID}/posts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "ThreadID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "postCreateDto",
+        "Type": "CheezAPI.Dtos\u002BPostCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CheezAPI.Dtos\u002BPostGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.PostController",
+    "Method": "GetPost",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "ThreadID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CheezAPI.Dtos\u002BPostGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.PostController",
+    "Method": "UpdatePost",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "ThreadID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "postUpdateDto",
+        "Type": "CheezAPI.Dtos\u002BPostUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.PostController",
+    "Method": "DeletePost",
+    "RelativePath": "api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TopicID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "ThreadID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "id",
         "Type": "System.Int32",
