@@ -11,14 +11,14 @@ info:
 servers:
   - url: https://localhost:7203/api/v1/
 tags:
-  - name: users
-    description: Forum users
-  - name: topics
-    description: Forum topics
-  - name: threads
-    description: Forum threads
-  - name: posts
-    description: Forum posts
+  - name: User
+    description: Related to user management
+  - name: Topic
+    description: Related to topic management
+  - name: Thread
+    description: Related to forum thread management
+  - name: Post
+    description: Related to forum post management
 paths:
   /users:
     get:
