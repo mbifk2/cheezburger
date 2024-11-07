@@ -29,7 +29,7 @@ paths:
       operationId: GetUsers
       responses:
         '200':
-          description: A JSON aray of user names, emails and creation dates
+          description: A JSON array of user names, emails and creation dates
           content:
             application/json:
               schema:
@@ -114,7 +114,7 @@ paths:
       operationId: GetTopics
       responses:
         '200':
-          description: A JSON aray of topic names, descriptions and creation dates
+          description: A JSON array of topic names, descriptions and creation dates
           content:
             application/json:
               schema:
@@ -199,7 +199,7 @@ paths:
       operationId: GetThreads
       responses:
         '200':
-          description: A JSON aray of thread titles, creation dates and locked status
+          description: A JSON array of thread titles, creation dates and locked status
           content:
             application/json:
               schema:
@@ -294,7 +294,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PostDto'
+                  $ref: '#/components/schemas/PostGetDto'
         '404':
           description: Not found (topic or thread with the given ID does not exist)
     post:
@@ -333,7 +333,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostDto'
+                $ref: '#/components/schemas/PostGetDto'
         '404':
           description: Not found (topic, thread or post with the given ID does not exist)
     put:
@@ -364,6 +364,160 @@ paths:
           description: No content
         '404':
           description: Not found (topic, thread or post with the given ID does not exist)
+components:
+  schemas:
+    UserCreateDto:
+      type: object
+      properties:
+        username:
+          type: string
+          nullable: false
+        email:
+          type: string
+          format: email
+          nullable: false
+        password:
+          type: string
+          minLength: 8
+          maxLength: 64
+          nullable: false
+      required:
+        - username
+        - email
+        - password
+    UserDto: 
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int32
+        username:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    UserUpdateDto:
+      type: object
+      properties:
+        username:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        isBanned:
+          type: boolean
+          nullable: true
+        isAdmin:
+          type: boolean
+          nullable: true
+        password:
+          type: string
+          minLength: 8
+          maxLength: 64
+          nullable: true
+    TopicCreateDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      required:
+        - title
+    TopicDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    TopicUpdateDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    ThreadCreateDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+      required:
+        - title
+    ThreadDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        isLocked:
+          type: boolean
+          nullable: true
+    ThreadUpdateDto:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        isLocked:
+          type: boolean
+          nullable: true
+    PostCreateDto:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int32
+        content:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - userID
+    PostGetDto:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int32
+        content:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    PostUpdateDto:
+      type: object
+      properties:
+        content:
+          type: string
+          nullable: true
+
+
+
+
 
 
 
