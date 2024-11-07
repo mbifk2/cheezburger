@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using static CheezAPI.Models;
 using static CheezAPI.Dtos;
+using System.Runtime.InteropServices;
 
 namespace CheezAPI.Controllers
 {
@@ -77,9 +78,8 @@ namespace CheezAPI.Controllers
         }
 
         //POST: api/v1/topics/{TopicID}/threads/{ThreadID}/posts 201 Created
-        // created by specific user
         [HttpPost]
-        public async Task<ActionResult<PostGetDto>> PostPost(int TopicID, int ThreadID, PostCreateDto postCreateDto)
+        public async Task<ActionResult<PostGetDto>> CreatePost(int TopicID, int ThreadID, PostCreateDto postCreateDto)
         {
             var topic = await _context.Topics.FindAsync(TopicID);
             if (topic is null)
@@ -113,36 +113,38 @@ namespace CheezAPI.Controllers
             });
         }
 
-        //PUT: api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id} 200 OK
+        //PUT: api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id} 204 No Content
         [HttpPut("{id}")]
-        public async Task UpdatePost(int TopicID, int ThreadID, int id, PostUpdateDto postUpdateDto)
+        public async Task<IActionResult> UpdatePost(int TopicID, int ThreadID, int id, PostUpdateDto postUpdateDto)
         {
             var topic = await _context.Topics.FindAsync(TopicID);
             if (topic is null)
             {
-                NotFound("Topic not found.");
+                return NotFound("Topic not found.");
             }
 
             var thread = await _context.Fthreads.FindAsync(ThreadID);
 
             if (thread is null)
             {
-                NotFound("Thread not found.");
+                return NotFound("Thread not found.");
             }
 
             var post = await _context.Posts.FindAsync(id);
 
             if (post is null)
             {
-                NotFound("Post not found.");
+                return NotFound("Post not found.");
             }
 
-            if (postUpdateDto.Content != null)
+            if (!string.IsNullOrEmpty(postUpdateDto.Content))
             {
                 post.Content = postUpdateDto.Content;
             }
 
             await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
         //DELETE: api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id} 204 No Content

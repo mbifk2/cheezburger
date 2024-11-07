@@ -87,7 +87,7 @@ namespace CheezAPI.Controllers
 
         //PUT: api/v1/topics/{id} 204 No Content
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTopic(int id, TopicUpdateDto topicUpdateDto)
+        public async Task<IActionResult> UpdateTopic(int id, TopicUpdateDto topicUpdateDto)
         {
             var topic = await _context.Topics.FindAsync(id);
             if (topic == null)

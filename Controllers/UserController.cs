@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 using static CheezAPI.Dtos;
 using static CheezAPI.Models;
 
@@ -53,11 +54,16 @@ namespace CheezAPI.Controllers
 
         // POST: api/v1/users 201 Created
         [HttpPost]
-        public async Task<ActionResult<UserDto>> PostUser(UserCreateDto userCreateDto)
+        public async Task<ActionResult<UserDto>> CreateUser(UserCreateDto userCreateDto)
         {
+            if (userCreateDto == null)
+            {
+                return BadRequest("wtf");
+            }
+
             if (await _context.Users.AnyAsync(u => u.Username == userCreateDto.Username || u.Email == userCreateDto.Email))
             {
-                return BadRequest("Username and/or email already used.");
+                return Conflict("Username and/or email already used.");
             }
 
             if (string.IsNullOrEmpty(userCreateDto.Password) || string.IsNullOrEmpty(userCreateDto.Username) || string.IsNullOrEmpty(userCreateDto.Email))
@@ -65,6 +71,25 @@ namespace CheezAPI.Controllers
                 return BadRequest("One or more required fields are empty.");
             }
 
+            if (!string.IsNullOrEmpty(userCreateDto.Email) && !Regex.IsMatch(userCreateDto.Email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+            {
+                return UnprocessableEntity("Invalid email format.");
+            }
+
+            if (userCreateDto.Username.Length > 32)
+            {
+                return UnprocessableEntity("Username must be at most 32 characters long.");
+            }
+
+            if (userCreateDto.Password.Length < 8)
+            {
+                return UnprocessableEntity("Password must be at least 8 characters long.");
+            }
+
+            if (userCreateDto.Password.Length > 64)
+            {
+                return UnprocessableEntity("Password must be at most 64 characters long.");
+            }
 
             var hashedPassword = _pws.HashPassword(userCreateDto.Password);
 
@@ -95,16 +120,19 @@ namespace CheezAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserUpdateDto userUpdateDto)
         {
-            // Find the user by ID
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound("User not found.");
             }
+            if (await _context.Users.AnyAsync(u => u.Username == userUpdateDto.Username || u.Email == userUpdateDto.Email))
+            {
+                return Conflict("Username and/or email already used.");
+            }
 
-            // Update fields if provided
             if (!string.IsNullOrEmpty(userUpdateDto.Username)) user.Username = userUpdateDto.Username;
             if (!string.IsNullOrEmpty(userUpdateDto.Email)) user.Email = userUpdateDto.Email;
+
             if (userUpdateDto.IsBanned.HasValue) user.IsBanned = userUpdateDto.IsBanned.Value;
             if (userUpdateDto.IsAdmin.HasValue) user.IsAdmin = userUpdateDto.IsAdmin.Value;
 
@@ -115,7 +143,6 @@ namespace CheezAPI.Controllers
                 user.PasswordHash = hashedPassword;
             }
 
-            // Save changes
             await _context.SaveChangesAsync();
 
             return NoContent();

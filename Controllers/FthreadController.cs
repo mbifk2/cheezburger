@@ -88,7 +88,7 @@ namespace CheezAPI.Controllers
             });
         }
 
-        //PUT: api/v1/topics/{TopicID}/threads/{id} 200 OK
+        //PUT: api/v1/topics/{TopicID}/threads/{id} 204 No Content
         [HttpPut("{id}")]
         public async Task<ActionResult<FthreadDto>> PutThread(int TopicID, int id, FthreadUpdateDto fthreadUpdateDto)
         {
@@ -110,12 +110,7 @@ namespace CheezAPI.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new FthreadDto
-            {
-                Title = thread.Title,
-                CreatedAt = thread.CreatedAt,
-                IsLocked = thread.IsLocked
-            });
+            return NoContent();
         }
 
         //DELETE: api/v1/topics/{TopicID}/threads/{id} 204 No Content

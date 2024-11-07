@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CheezAPI
 {
@@ -33,6 +34,12 @@ namespace CheezAPI
                 numBytesRequested: 256 / 8));
 
             return hashedPassword == parts[1];
+        }
+
+        public Strength CheckStrength(string password)
+        {
+            // later
+            throw new NotImplementedException();
         }
     }
 }

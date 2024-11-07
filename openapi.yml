@@ -1,0 +1,66 @@
+openapi: '3.0.3'
+info:
+  title: Cheez API
+  description: API for Cheezburger forum
+  contact:
+    email: matbin@ktu.lt
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+  version: '1.0'
+servers:
+  - url: https://localhost:7203/api/v1/
+tags:
+  - name: users
+    description: Forum users
+  - name: topics
+    description: Forum topics
+  - name: threads
+    description: Forum threads
+  - name: posts
+    description: Forum posts
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get all users
+      description: Returns the list of ALL the users on the forum.
+      operationId: GetUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
+    post:
+      tags:
+        - users
+      summary: Create a new user
+      description: Creates a new user on the forum.
+      operationId: CreateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateDto'
+        '400':
+          description: Bad request (invalid input data)
+        '409':
+          description: Conflict (user with the same username already exists)'
+          
+
+
+                  
+
