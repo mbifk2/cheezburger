@@ -18,7 +18,7 @@ CREATE TABLE topics (
     IsHidden BIT DEFAULT 0
 );
 
-CREATE TABLE fthreads (
+CREATE TABLE threads (
     FthreadID INT IDENTITY(1,1) PRIMARY KEY,
     TopicID INT,
     Title VARCHAR(100) NOT NULL,

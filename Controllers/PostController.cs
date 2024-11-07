@@ -29,7 +29,7 @@ namespace CheezAPI.Controllers
                 return NotFound("Topic not found.");
             }
 
-            var thread = await _context.Fthreads.FindAsync(ThreadID);
+            var thread = await _context.Threads.FindAsync(ThreadID);
             if (thread is null) 
             {
                 return NotFound("Thread not found.");
@@ -55,7 +55,7 @@ namespace CheezAPI.Controllers
                 return NotFound("Topic not found.");
             }
 
-            var thread = await _context.Fthreads.FindAsync(ThreadID);
+            var thread = await _context.Threads.FindAsync(ThreadID);
 
             if (thread is null)
             {
@@ -87,7 +87,7 @@ namespace CheezAPI.Controllers
                 return NotFound("Topic not found.");
             }
 
-            var thread = await _context.Fthreads.FindAsync(ThreadID);
+            var thread = await _context.Threads.FindAsync(ThreadID);
 
             if (thread is null)
             {
@@ -123,7 +123,7 @@ namespace CheezAPI.Controllers
                 return NotFound("Topic not found.");
             }
 
-            var thread = await _context.Fthreads.FindAsync(ThreadID);
+            var thread = await _context.Threads.FindAsync(ThreadID);
 
             if (thread is null)
             {
@@ -157,7 +157,7 @@ namespace CheezAPI.Controllers
                 return NotFound("Topic not found.");
             }
 
-            var thread = await _context.Fthreads.FindAsync(ThreadID);
+            var thread = await _context.Threads.FindAsync(ThreadID);
 
             if (thread is null)
             {

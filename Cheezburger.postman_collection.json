@@ -1,0 +1,910 @@
+{
+	"info": {
+		"_postman_id": "0b49adc3-d9c3-4cda-a1e4-d3e6fbcb542b",
+		"name": "Cheezburger",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39570785"
+	},
+	"item": [
+		{
+			"name": "List of users 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User by ID 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User not found 404",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/33",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user 201",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"UserToDelete\",\r\n    \"email\": \"test@test.tt\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Conflicting username 409",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"exampleUser\",\r\n    \"email\": \"test@test.tt\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Conflicting email 409",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"UniqueName\",\r\n    \"email\": \"new@new.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Malformed username 400",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"\",\r\n    \"email\": \"new2@new.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unprocessable email 422",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Unique2222\",\r\n    \"email\": \"meow\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit user 204",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"EditedName\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/8",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No user to edit 404",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"EditedName\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/88",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"88"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "409 Conflict",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testFor409\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/8",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user 204",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testFor409\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/users/10",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of topics 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Topic by ID 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create topic 201",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"TopicToDelete\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Conflicting title 409",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"testTopic\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No title 400",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Preparing to edit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Title to change\",\r\n    \"description\": \"Description to change\",\r\n    \"ishidden\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit topic 204",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Title changed\",\r\n    \"description\": \"Description changed\",\r\n    \"ishidden\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/10",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete topic 204",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Title changed\",\r\n    \"description\": \"Description changed\",\r\n    \"ishidden\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/9",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of threads 200",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Title changed\",\r\n    \"description\": \"Description changed\",\r\n    \"ishidden\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One thread 200",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Title changed\",\r\n    \"description\": \"Description changed\",\r\n    \"ishidden\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create thread 201",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"New thread\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit thread 204",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"New thread (edited)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/17",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete thread 204",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"New thread (edited)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/17",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All posts in a thread 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/6/posts",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"6",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One post in a thread 200",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/6/posts/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"6",
+						"posts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create post 201",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userid\": 4,\r\n    \"content\": \"Post edited by user with ID 4.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/6/posts",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"6",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit post 204",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Post edited by user with ID 4.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/6/posts/22",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"6",
+						"posts",
+						"22"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete post 204",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Post edited by user with ID 4.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7203/api/v1/topics/1/threads/6/posts/22",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7203",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"1",
+						"threads",
+						"6",
+						"posts",
+						"22"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

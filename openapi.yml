@@ -23,13 +23,13 @@ paths:
   /users:
     get:
       tags:
-        - users
+        - User
       summary: Get all users
       description: Returns the list of ALL the users on the forum.
       operationId: GetUsers
       responses:
         '200':
-          description: OK
+          description: A JSON aray of user names, emails and creation dates
           content:
             application/json:
               schema:
@@ -38,7 +38,7 @@ paths:
                   $ref: '#/components/schemas/UserDto'
     post:
       tags:
-        - users
+        - User
       summary: Create a new user
       description: Creates a new user on the forum.
       operationId: CreateUser
@@ -50,15 +50,326 @@ paths:
               $ref: '#/components/schemas/UserCreateDto'
       responses:
         '201':
-          description: Created
+          description: JSON object of the created user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserCreateDto'
         '400':
           description: Bad request (invalid input data)
+        '422':
+          description: Unprocessable entity (password/username is too short or too long)
         '409':
-          description: Conflict (user with the same username already exists)'
+          description: Conflict (user with the same username or email already exists)'
+  /users/{id}:
+    get:
+      tags:
+        - User
+      summary: Get user by ID
+      description: Returns a single user by ID.
+      operationId: GetUser
+      responses: 
+        '200':
+          description: JSON object of the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: Not found
+    put:
+      tags:
+        - User
+      summary: Update user
+      description: Updates a user with the given ID.
+      operationId: UpdateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateDto'
+      responses:
+        '204':
+          description: No content
+        '409':
+          description: Conflict (user with the same username or email already exists)
+    delete:
+      tags:
+        - User
+      summary: Delete user
+      description: Deletes a user with the given ID.
+      operationId: DeleteUser
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+  /topics:
+    get:
+      tags:
+        - Topic
+      summary: Get all topics
+      description: Returns the list of ALL the topics on the forum.
+      operationId: GetTopics
+      responses:
+        '200':
+          description: A JSON aray of topic names, descriptions and creation dates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TopicDto'
+    post:
+      tags: 
+        - Topic
+      summary: Create a new topic
+      description: Creates a new topic on the forum.
+      operationId: PostTopic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopicCreateDto'
+      responses:
+        '201':
+          description: JSON object of the created topic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicCreateDto'
+        '400':
+          description: Bad request (invalid or empty input data)
+        '409':
+          description: Conflict (topic with the same title already exists)
+  /topics/{id}:
+    get:
+      tags:
+        - Topic
+      summary: Get topic by ID
+      description: Returns a single topic by ID.
+      operationId: GetTopic
+      responses:
+        '200':
+          description: JSON object of the topic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicDto'
+        '404':
+          description: Not found
+    put:
+      tags:
+        - Topic
+      summary: Update topic
+      description: Updates a topic with the given ID.
+      operationId: UpdateTopic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopicUpdateDto'
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found (topic with the given ID does not exist)
+        '409':
+          description: Conflict (topic with the same title already exists)
+    delete:
+      tags:
+        - Topic
+      summary: Delete topic
+      description: Deletes a topic with the given ID.
+      operationId: DeleteTopic
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+  /topics/{id}/threads:
+    get:
+      tags:
+        - Thread
+      summary: Get all threads in a topic
+      description: Returns the list of ALL the threads in a topic.
+      operationId: GetThreads
+      responses:
+        '200':
+          description: A JSON aray of thread titles, creation dates and locked status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ThreadDto'
+        '404':
+          description: Not found (topic with the given ID does not exist)
+    post:
+      tags:
+        - Thread
+      summary: Create a new thread in a topic
+      description: Creates a new thread in a topic.
+      operationId: PostThread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreadCreateDto'
+      responses:
+        '201':
+          description: JSON object of the created thread
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadCreateDto'
+        '400':
+          description: Bad request (invalid or empty input data)
+        '404':
+          description: Not found (topic with the given ID does not exist)
+        '409':
+          description: Conflict (thread with the same title already exists)
+  /topics/{id}/threads/{id2}:
+    get:
+      tags:
+        - Thread
+      summary: Get thread by ID
+      description: Returns a single thread by ID.
+      operationId: GetThread
+      responses:
+        '200':
+          description: JSON object of the thread
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadDto'
+        '404':
+          description: Not found
+    put:
+      tags:
+        - Thread
+      summary: Update thread
+      description: Updates a thread with the given ID.
+      operationId: UpdateThread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThreadUpdateDto'
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found (topic or thread with the given ID does not exist)
+        '409':
+          description: Conflict (thread with the same title already exists)
+    delete:
+      tags:
+        - Thread
+      summary: Delete thread
+      description: Deletes a thread with the given ID.
+      operationId: DeleteThread
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+  /topics/{id}/threads/{id2}/posts:
+    get:
+      tags:
+        - Post
+      summary: Get all posts in a thread
+      description: Returns the list of ALL the posts in a thread.
+      operationId: GetPosts
+      responses:
+        '200':
+          description: A JSON array of post contents, creation dates and user IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostDto'
+        '404':
+          description: Not found (topic or thread with the given ID does not exist)
+    post:
+      tags:
+        - Post
+      summary: Create a new post in a thread
+      description: Creates a new post in a thread.
+      operationId: CreatePost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreateDto'
+      responses:
+        '201':
+          description: JSON object of the created post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostCreateDto'
+        '400':
+          description: Bad request (invalid or empty input data)
+        '404':
+          description: Not found (topic or thread with the given ID does not exist)
+  /topics/{id}/threads/{id2}/posts/{id3}:
+    get:
+      tags:
+        - Post
+      summary: Get post by ID
+      description: Returns a single post by ID.
+      operationId: GetPost
+      responses:
+        '200':
+          description: JSON object of the post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDto'
+        '404':
+          description: Not found (topic, thread or post with the given ID does not exist)
+    put:
+      tags:
+        - Post
+      summary: Update post
+      description: Updates a post with the given ID.
+      operationId: UpdatePost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUpdateDto'
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found (topic, thread or post with the given ID does not exist)
+    delete:
+      tags:
+        - Post
+      summary: Delete post
+      description: Deletes a post with the given ID.
+      operationId: DeletePost
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found (topic, thread or post with the given ID does not exist)
+
+
+
+
+
+
           
 
 

@@ -37,7 +37,7 @@
         public class TopicCreateDto
         {
             public string Title { get; set; }
-            public string Description { get; set; }
+            public string ?Description { get; set; }
         }
 
         public class TopicUpdateDto
@@ -47,19 +47,19 @@
             public bool? IsHidden { get; set; }
         }
 
-        public class FthreadDto
+        public class ThreadDto
         {
             public string Title { get; set; }
             public DateTime CreatedAt { get; set; }
             public bool IsLocked { get; set; }
         }
 
-        public class FthreadCreateDto
+        public class ThreadCreateDto
         {
             public string Title { get; set; }
         }
 
-        public class FthreadUpdateDto
+        public class ThreadUpdateDto
         {
             public string? Title { get; set; }
             public bool? IsLocked { get; set; }

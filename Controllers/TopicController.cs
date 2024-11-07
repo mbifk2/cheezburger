@@ -62,7 +62,7 @@ namespace CheezAPI.Controllers
             };
             if (await _context.Topics.AnyAsync(t => t.Title == topicCreateDto.Title))
             {
-                return BadRequest("Topic title already used.");
+                return Conflict("Topic title already used.");
             }
 
             if (string.IsNullOrEmpty(topic.Title))
@@ -74,6 +74,7 @@ namespace CheezAPI.Controllers
             {
                 topic.Description = "No description provided.";
             }
+
             _context.Topics.Add(topic);
             await _context.SaveChangesAsync();
 
@@ -93,6 +94,11 @@ namespace CheezAPI.Controllers
             if (topic == null)
             {
                 return NotFound("Topic not found.");
+            }
+
+            if (await _context.Topics.AnyAsync(t => t.Title == topicUpdateDto.Title))
+            {
+                return Conflict("Topic title already used.");
             }
 
             if (topicUpdateDto.Title != null)

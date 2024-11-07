@@ -56,9 +56,9 @@ namespace CheezAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDto>> CreateUser(UserCreateDto userCreateDto)
         {
-            if (userCreateDto == null)
+            if (userCreateDto is null)
             {
-                return BadRequest("wtf");
+                return BadRequest("Unknown error");
             }
 
             if (await _context.Users.AnyAsync(u => u.Username == userCreateDto.Username || u.Email == userCreateDto.Email))
