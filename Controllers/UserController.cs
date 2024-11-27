@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 using static CheezAPI.Dtos;
 using static CheezAPI.Models;
@@ -13,12 +18,49 @@ namespace CheezAPI.Controllers
         private readonly CheezContext _context;
         private readonly IPasswordService _pws;
         private readonly ILogger<UserController> _logger;
+        private readonly IConfiguration _config;
 
-        public UserController(CheezContext context, IPasswordService pws, ILogger<UserController> logger)
+        public UserController(CheezContext context, IPasswordService pws, ILogger<UserController> logger, IConfiguration config)
         {
             _context = context;
             _pws = pws;
             _logger = logger;
+            _config = config;
+        }
+
+        private string GenerateToken(User user)
+        {
+            var jwtSettings = _config.GetSection("JwtSettings");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(double.Parse(jwtSettings["ExpiryInMinutes"])),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login (LoginDto loginDto)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginDto.Username);
+
+            if (user == null) return Unauthorized("User doesn't exist.");
+            if (!_pws.VerifyPassword(user.PasswordHash, loginDto.Password)) return Unauthorized("Invalid password.");
+
+            var token = GenerateToken(user);
+            return Ok(new {Token = token});
         }
 
         // GET: api/v1/users 200 OK
@@ -54,7 +96,7 @@ namespace CheezAPI.Controllers
 
         // POST: api/v1/users 201 Created
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser(UserCreateDto userCreateDto)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserCreateDto userCreateDto)
         {
             if (userCreateDto is null)
             {
@@ -99,7 +141,8 @@ namespace CheezAPI.Controllers
                 Email = userCreateDto.Email,
                 PasswordHash = hashedPassword,
                 CreatedAt = DateTime.Now,
-                IsOnline = true
+                IsOnline = true,
+                IsVerified = false
             };
 
             _context.Users.Add(user);
@@ -110,31 +153,41 @@ namespace CheezAPI.Controllers
                 UserID = user.UserID,
                 Username = user.Username,
                 CreatedAt = user.CreatedAt,
-
             };
 
             return CreatedAtAction(nameof(GetUser), new { id = user.UserID }, userDto);
         }
 
         // PUT: api/v1/users/{id} 204 No Content
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserUpdateDto userUpdateDto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDto userUpdateDto)
         {
             var user = await _context.Users.FindAsync(id);
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
+
             if (user == null)
             {
                 return NotFound("User not found.");
             }
-            if (await _context.Users.AnyAsync(u => u.Username == userUpdateDto.Username || u.Email == userUpdateDto.Email))
+
+            if (!isAdmin && user.UserID != loggedIn)
+            {
+                return Forbid();
+            }
+
+            if (await _context.Users.AnyAsync(u => u.Username == userUpdateDto.Username && u.UserID != user.UserID || u.Email == userUpdateDto.Email && u.UserID != user.UserID))
             {
                 return Conflict("Username and/or email already used.");
             }
 
-            if (!string.IsNullOrEmpty(userUpdateDto.Username)) user.Username = userUpdateDto.Username;
-            if (!string.IsNullOrEmpty(userUpdateDto.Email)) user.Email = userUpdateDto.Email;
+            if (!string.IsNullOrEmpty(userUpdateDto.Username) || user.Username == userUpdateDto.Username) user.Username = userUpdateDto.Username;
+            if (!string.IsNullOrEmpty(userUpdateDto.Email) || user.Email == userUpdateDto.Email) user.Email = userUpdateDto.Email;
 
             if (userUpdateDto.IsBanned.HasValue) user.IsBanned = userUpdateDto.IsBanned.Value;
             if (userUpdateDto.IsAdmin.HasValue) user.IsAdmin = userUpdateDto.IsAdmin.Value;
+            if (userUpdateDto.IsVerified.HasValue) user.IsVerified = userUpdateDto.IsVerified.Value;
 
             var hashedPassword = "";
             if (!string.IsNullOrEmpty(userUpdateDto.Password))
@@ -149,13 +202,21 @@ namespace CheezAPI.Controllers
         }
 
         // DELETE: api/v1/users/{id} 204 No Content
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound("User not found.");
+            }
+            var isAdmin = User.IsInRole("Admin");
+
+            if (!isAdmin && loggedInUserId != id)
+            {
+                return Forbid();
             }
 
             _context.Users.Remove(user);

@@ -3,6 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using static CheezAPI.Models;
 using static CheezAPI.Dtos;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace CheezAPI.Controllers
 {
@@ -26,10 +31,11 @@ namespace CheezAPI.Controllers
             var topics = await _context.Topics.ToListAsync();
 
             return Ok(topics.Select(t => new TopicDto
-            {
+            { 
                 Title = t.Title,
                 Description = t.Description,
-                CreatedAt = t.CreatedAt
+                CreatedAt = t.CreatedAt,
+                CreatorId = t.CreatorID
             }));
         }
 
@@ -46,62 +52,67 @@ namespace CheezAPI.Controllers
             {
                 Title = topic.Title,
                 Description = topic.Description,
-                CreatedAt = topic.CreatedAt
+                CreatorId = topic.CreatorID
             });
         }
 
         //POST: api/v1/topics 201 Created
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<TopicDto>> PostTopic(TopicCreateDto topicCreateDto)
+        public async Task<IActionResult> CreateTopic([FromBody] TopicCreateDto topicCreateDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
             var topic = new Topic
             {
                 Title = topicCreateDto.Title,
                 Description = topicCreateDto.Description,
-                CreatedAt = DateTime.Now
+                CreatorID = loggedIn,
+                CreatedAt = DateTime.UtcNow
             };
-            if (await _context.Topics.AnyAsync(t => t.Title == topicCreateDto.Title))
-            {
-                return Conflict("Topic title already used.");
-            }
-
-            if (string.IsNullOrEmpty(topic.Title))
-            {
-                return BadRequest("Topic needs a title.");
-            }
-
-            if (string.IsNullOrEmpty(topic.Description))
-            {
-                topic.Description = "No description provided.";
-            }
 
             _context.Topics.Add(topic);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetTopic), new { id = topic.TopicID }, new TopicDto
-            {
+            return CreatedAtAction(nameof(GetTopic), new { id = topic.TopicID}, new TopicDto 
+            { 
                 Title = topic.Title,
-                Description = topic.Description,
-                CreatedAt = topic.CreatedAt
+                Description = topic.Description, 
+                CreatedAt = topic.CreatedAt,
+                CreatorId = topic.CreatorID 
             });
         }
 
         //PUT: api/v1/topics/{id} 204 No Content
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTopic(int id, TopicUpdateDto topicUpdateDto)
+        public async Task<IActionResult> UpdateTopic(int id, [FromBody] TopicUpdateDto topicUpdateDto)
         {
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
+
             var topic = await _context.Topics.FindAsync(id);
             if (topic == null)
             {
                 return NotFound("Topic not found.");
             }
 
-            if (await _context.Topics.AnyAsync(t => t.Title == topicUpdateDto.Title))
+            if (!isAdmin && loggedIn != topic.CreatorID)
+            {
+                return Forbid();
+            }
+
+            if (await _context.Topics.AnyAsync(t => t.Title == topicUpdateDto.Title && t.TopicID != topic.TopicID))
             {
                 return Conflict("Topic title already used.");
             }
 
-            if (topicUpdateDto.Title != null)
+            if (topicUpdateDto.Title != null || topicUpdateDto.Title == topic.Title)
             {
                 topic.Title = topicUpdateDto.Title;
             }
@@ -122,6 +133,7 @@ namespace CheezAPI.Controllers
         }
 
         //DELETE: api/v1/topics/{id} 204 No Content
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTopic(int id)
         {
@@ -129,6 +141,14 @@ namespace CheezAPI.Controllers
             if (topic == null)
             {
                 return NotFound("Topic not found.");
+            }
+
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
+            
+            if (!isAdmin && topic.CreatorID != loggedIn)
+            {
+                return Forbid();
             }
 
             _context.Topics.Remove(topic);

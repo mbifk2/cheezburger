@@ -21,7 +21,7 @@
   },
   {
     "ContainingType": "CheezAPI.Controllers.TopicController",
-    "Method": "PostTopic",
+    "Method": "CreateTopic",
     "RelativePath": "api/v1/topics",
     "HttpMethod": "POST",
     "IsController": true,
@@ -33,17 +33,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "CheezAPI.Dtos\u002BTopicDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "CheezAPI.Controllers.TopicController",
@@ -517,6 +507,22 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.UserController",
+    "Method": "Login",
+    "RelativePath": "api/v1/users/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginDto",
+        "Type": "CheezAPI.Dtos\u002BLoginDto",
         "IsRequired": true
       }
     ],

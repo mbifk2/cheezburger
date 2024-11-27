@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using static CheezAPI.Models;
 using static CheezAPI.Dtos;
 using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CheezAPI.Controllers
 {
@@ -41,7 +43,7 @@ namespace CheezAPI.Controllers
             {
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
-                UserID = p.UserID
+                CreatorID = p.CreatorID,
             }));
         }
 
@@ -73,13 +75,14 @@ namespace CheezAPI.Controllers
             {
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
-                UserID = post.UserID
+                CreatorID = post.CreatorID 
             });
         }
 
         //POST: api/v1/topics/{TopicID}/threads/{ThreadID}/posts 201 Created
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<PostGetDto>> CreatePost(int TopicID, int ThreadID, PostCreateDto postCreateDto)
+        public async Task<ActionResult<PostGetDto>> CreatePost(int TopicID, int ThreadID, [FromBody] PostCreateDto postCreateDto)
         {
             var topic = await _context.Topics.FindAsync(TopicID);
             if (topic is null)
@@ -94,11 +97,13 @@ namespace CheezAPI.Controllers
                 return NotFound("Thread not found.");
             }
 
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
             var post = new Post
             {
                 Content = postCreateDto.Content,
                 CreatedAt = DateTime.Now,
-                UserID = postCreateDto.UserID,
+                CreatorID = loggedIn,
                 FthreadID = ThreadID
             };
 
@@ -109,11 +114,12 @@ namespace CheezAPI.Controllers
             {
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
-                UserID = post.UserID
+                CreatorID = post.CreatorID
             });
         }
 
         //PUT: api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id} 204 No Content
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePost(int TopicID, int ThreadID, int id, PostUpdateDto postUpdateDto)
         {
@@ -137,6 +143,14 @@ namespace CheezAPI.Controllers
                 return NotFound("Post not found.");
             }
 
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
+
+            if (!isAdmin && post.CreatorID != loggedIn)
+            {
+                return Forbid();
+            }
+
             if (!string.IsNullOrEmpty(postUpdateDto.Content))
             {
                 post.Content = postUpdateDto.Content;
@@ -148,6 +162,7 @@ namespace CheezAPI.Controllers
         }
 
         //DELETE: api/v1/topics/{TopicID}/threads/{ThreadID}/posts/{id} 204 No Content
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int TopicID, int ThreadID, int id)
         {
@@ -171,11 +186,18 @@ namespace CheezAPI.Controllers
                 return NotFound("Post not found.");
             }
 
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
+
+            if (!isAdmin && post.CreatorID != loggedIn)
+            {
+                return Forbid();
+            }
+
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
     }
 }

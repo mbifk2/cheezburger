@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using static CheezAPI.Models;
 using static CheezAPI.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace CheezAPI.Controllers
@@ -34,7 +36,9 @@ namespace CheezAPI.Controllers
             {
                 Title = f.Title,
                 CreatedAt = f.CreatedAt,
-                IsLocked = f.IsLocked
+                IsLocked = f.IsLocked,
+                VerifiedOnly = f.VerifiedOnly,
+                CreatorId = f.CreatorID
             }));
         }
 
@@ -57,19 +61,25 @@ namespace CheezAPI.Controllers
             {
                 Title = thread.Title,
                 CreatedAt = thread.CreatedAt,
-                IsLocked = thread.IsLocked
+                IsLocked = thread.IsLocked,
+                VerifiedOnly = thread.VerifiedOnly,
+                CreatorId = thread.CreatorID
             });
         }
 
         //POST: api/v1/topics/{TopicID}/threads 201 Created
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<ThreadDto>> PostThread(int TopicID, ThreadCreateDto threadCreateDto)
+        public async Task<ActionResult<ThreadDto>> PostThread(int TopicID, [FromBody] ThreadCreateDto threadCreateDto)
         {
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var thread = new Fthread
             {
                 Title = threadCreateDto.Title,
                 CreatedAt = DateTime.Now,
-                TopicID = TopicID
+                TopicID = TopicID,
+                VerifiedOnly = false,
+                CreatorID = loggedIn
             };
 
             if (await _context.Threads.AnyAsync(f => f.Title == threadCreateDto.Title))
@@ -95,15 +105,20 @@ namespace CheezAPI.Controllers
             {
                 Title = thread.Title,
                 CreatedAt = thread.CreatedAt,
-                IsLocked = thread.IsLocked
+                IsLocked = thread.IsLocked,
+                VerifiedOnly = thread.VerifiedOnly,
+                CreatorId = thread.CreatorID
             });
         }
 
         //PUT: api/v1/topics/{TopicID}/threads/{id} 204 No Content
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<ThreadDto>> UpdateThread(int TopicID, int id, ThreadUpdateDto fthreadUpdateDto)
         {
             var topic = await _context.Topics.FindAsync(TopicID);
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
 
             if (topic == null)
             {
@@ -116,7 +131,7 @@ namespace CheezAPI.Controllers
                 return NotFound("Thread not found");
             }
 
-            if (await _context.Threads.AnyAsync(f => f.Title == fthreadUpdateDto.Title))
+            if (await _context.Threads.AnyAsync(f => f.Title == fthreadUpdateDto.Title && f.FthreadID != thread.FthreadID))
             {
                 return Conflict("Thread title already used.");
             }
@@ -128,7 +143,12 @@ namespace CheezAPI.Controllers
 
             if (fthreadUpdateDto.IsLocked != null)
             {
-                thread.IsLocked = (bool)fthreadUpdateDto.IsLocked;
+                thread.IsLocked = fthreadUpdateDto.IsLocked.Value;
+            }
+
+            if (fthreadUpdateDto.VerifiedOnly != null)
+            {
+                thread.VerifiedOnly = fthreadUpdateDto.VerifiedOnly.Value;
             }
 
             await _context.SaveChangesAsync();
@@ -137,6 +157,7 @@ namespace CheezAPI.Controllers
         }
 
         //DELETE: api/v1/topics/{TopicID}/threads/{id} 204 No Content
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteThread(int TopicID, int id)
         {
@@ -152,11 +173,18 @@ namespace CheezAPI.Controllers
                 return NotFound("Thread not found");
             }
 
+            var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var isAdmin = User.IsInRole("Admin");
+
+            if (!isAdmin && thread.CreatorID != loggedIn)
+            {
+                return Forbid();
+            }
+
             _context.Threads.Remove(thread);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
     }
-
 }
