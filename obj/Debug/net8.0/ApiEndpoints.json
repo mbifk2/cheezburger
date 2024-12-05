@@ -527,5 +527,25 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.UserController",
+    "Method": "Logout",
+    "RelativePath": "api/v1/users/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.UserController",
+    "Method": "GetProfile",
+    "RelativePath": "api/v1/users/profile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

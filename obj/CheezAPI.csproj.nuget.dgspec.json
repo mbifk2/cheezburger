@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tooma\\coding\\csharp\\CheezAPI\\CheezAPI.csproj": {}
+    "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\CheezAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tooma\\coding\\csharp\\CheezAPI\\CheezAPI.csproj": {
+    "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\CheezAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tooma\\coding\\csharp\\CheezAPI\\CheezAPI.csproj",
+        "projectUniqueName": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\CheezAPI.csproj",
         "projectName": "CheezAPI",
-        "projectPath": "C:\\Users\\tooma\\coding\\csharp\\CheezAPI\\CheezAPI.csproj",
+        "projectPath": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\CheezAPI.csproj",
         "packagesPath": "C:\\Users\\tooma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tooma\\coding\\csharp\\CheezAPI\\obj\\",
+        "outputPath": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

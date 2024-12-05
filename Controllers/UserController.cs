@@ -28,8 +28,14 @@ namespace CheezAPI.Controllers
             _config = config;
         }
 
-        private string GenerateToken(User user)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login (LoginDto loginDto)
         {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginDto.Username);
+
+            if (user == null) return Unauthorized("User doesn't exist.");
+            if (!_pws.VerifyPassword(user.PasswordHash, loginDto.Password)) return Unauthorized("Invalid password.");
+
             var jwtSettings = _config.GetSection("JwtSettings");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -49,22 +55,42 @@ namespace CheezAPI.Controllers
                 expires: DateTime.Now.AddMinutes(double.Parse(jwtSettings["ExpiryInMinutes"])),
                 signingCredentials: credentials
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+
+            Response.Cookies.Append("jwt", encodedToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.Now.AddMinutes(double.Parse(jwtSettings["ExpiryInMinutes"]))
+            });
+            return Ok(new { message = "Logged in successfully.", token = encodedToken });
         }
-        [HttpPost("login")]
-        public async Task<IActionResult> Login (LoginDto loginDto)
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginDto.Username);
-
-            if (user == null) return Unauthorized("User doesn't exist.");
-            if (!_pws.VerifyPassword(user.PasswordHash, loginDto.Password)) return Unauthorized("Invalid password.");
-
-            var token = GenerateToken(user);
-            return Ok(new {Token = token});
+            Response.Cookies.Delete("jwt", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+            return Ok(new { message = "Logged out successfully." });
         }
 
-        // GET: api/v1/users 200 OK
-        [HttpGet]
+        [Authorize]
+        [HttpGet("profile")]
+        public IActionResult GetProfile()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(new { userId });
+        }
+
+
+            // GET: api/v1/users 200 OK
+            [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();

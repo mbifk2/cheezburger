@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace CheezAPI
@@ -45,6 +48,33 @@ namespace CheezAPI
                     {
                         context.Response.StatusCode = 403;
                         return Task.CompletedTask;
+                    }
+                };
+            });
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.Cookie.Name = "jwt";
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnValidatePrincipal = async context =>
+                    {
+                        var cookie = context.Request.Cookies["jwt"];
+                        if (string.IsNullOrEmpty(cookie)) return;
+
+                        try
+                        {
+                            var tokenHandler = new JwtSecurityTokenHandler();
+                            var token = tokenHandler.ReadJwtToken(cookie);
+                            var userId = token.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
+                            if (string.IsNullOrEmpty(userId)) context.RejectPrincipal();
+                        }
+                        catch (Exception)
+                        {
+                            context.RejectPrincipal();
+                        }
                     }
                 };
             });
