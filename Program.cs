@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,8 +15,12 @@ namespace CheezAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<CheezContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("CheezDB"))); // enter server in the json 
+            string dbConnectionString = Environment.GetEnvironmentVariable("CHEEZ_DB");
+            
+            using var connection = new SqlConnection(dbConnectionString);
+            connection.Open();
+
+            builder.Services.AddDbContext<CheezContext>(options => options.UseSqlServer(connection));
 
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
