@@ -70,6 +70,7 @@ C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\NuGet.Versio
 C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\System.ClientModel.dll
 C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\System.CodeDom.dll
 C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\System.Composition.AttributedModel.dll
 C:\Users\tooma\coding\csharp\cheezburger\bin\Release\net8.0\publish\System.Composition.Convention.dll

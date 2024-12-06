@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\cheezapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,20 +46,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Models.cs",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Models.cs",
               "RelativeDocumentMoniker": "Models.cs",
               "ToolTip": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Models.cs",
               "RelativeToolTip": "Models.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAswAEAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAA5wAEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T00:07:11.431Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-06T00:07:11.431Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -67,8 +66,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-12-05T20:24:30.139Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T20:24:30.139Z"
             },
             {
               "$type": "Document",
@@ -80,18 +78,17 @@
               "RelativeToolTip": "Controllers\\ThreadController.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T20:23:53.943Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T20:23:53.943Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
               "ToolTip": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Controllers\\UserController.cs",
               "RelativeToolTip": "Controllers\\UserController.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAowDIAAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAwwHMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-05T20:23:27.234Z",
               "EditorCaption": ""
@@ -106,8 +103,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAqwBIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T20:17:02.737Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T20:17:02.737Z"
             },
             {
               "$type": "Document",
@@ -119,8 +115,7 @@
               "RelativeToolTip": "CheezAPI.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-12-05T20:17:00.749Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T20:17:00.749Z"
             },
             {
               "$type": "Document",
@@ -132,8 +127,7 @@
               "RelativeToolTip": "Controllers\\TopicController.cs",
               "ViewState": "AgIAAE0AAAAAAAAAAAAIwIEAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T20:23:26.596Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T20:23:26.596Z"
             }
           ]
         }
