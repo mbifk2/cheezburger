@@ -14,6 +14,7 @@
             public bool IsOnline { get; set; }
             public bool IsAdmin { get; set; }
             public bool IsVerified { get; set; }
+            public string? RefreshToken{ get; internal set; }
         }
 
         public class Topic

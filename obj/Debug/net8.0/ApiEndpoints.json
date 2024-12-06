@@ -547,5 +547,15 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CheezAPI.Controllers.UserController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/v1/users/refresh",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

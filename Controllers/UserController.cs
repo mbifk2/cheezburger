@@ -29,7 +29,7 @@ namespace CheezAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login (LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginDto.Username);
 
@@ -43,35 +43,87 @@ namespace CheezAPI.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
             };
 
-            var token = new JwtSecurityToken(
+            var accessToken = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(double.Parse(jwtSettings["ExpiryInMinutes"])),
+                expires: DateTime.Now.AddSeconds(15),
                 signingCredentials: credentials
             );
-            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
+            var refreshToken = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,  
+                expires: DateTime.Now.AddMinutes(1440),
+                signingCredentials: credentials
+            );
 
-            Response.Cookies.Append("jwt", encodedToken, new CookieOptions
+            var encodedRefreshToken = new JwtSecurityTokenHandler().WriteToken(refreshToken);
+            Response.Cookies.Append("refresh_token", encodedRefreshToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.Now.AddMinutes(double.Parse(jwtSettings["ExpiryInMinutes"]))
+                Expires = DateTime.Now.AddMinutes(1440)
             });
-            return Ok(new { message = "Logged in successfully.", token = encodedToken });
+            return Ok(new { message = "Logged in successfully.", access_token = encodedAccessToken });
         }
+
+        [HttpPost("refresh")]
+        public IActionResult RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refresh_token"];
+            if (string.IsNullOrEmpty(refreshToken)) return Unauthorized("Refresh token not found.");
+
+            var jwtSettings = _config.GetSection("JwtSettings");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var handler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                var principal = handler.ValidateToken(refreshToken, new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,
+                    IssuerSigningKey = key,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"]
+                }, out SecurityToken validatedToken);
+
+                var accessToken = new JwtSecurityToken(
+                    issuer: jwtSettings["Issuer"],
+                    audience: jwtSettings["Audience"],
+                    claims: principal.Claims,
+                    expires: DateTime.Now.AddMinutes(15),
+                    signingCredentials: credentials
+                );
+
+                var encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken);
+
+                return Ok(new { access_token = encodedAccessToken });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Unauthorized("Invalid or expired token.");
+            }
+        }
+
 
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("jwt", new CookieOptions
+            Response.Cookies.Delete("refresh_token", new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
