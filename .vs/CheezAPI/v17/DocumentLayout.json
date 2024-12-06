@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -21,6 +17,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\cheezapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:cheezapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7BBBD8CC-6530-4185-8CBF-DD7ECA6FB268}|CheezAPI.csproj|c:\\users\\tooma\\coding\\csharp\\cheezburger\\controllers\\threadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,23 +38,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Models.cs",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Models.cs",
               "RelativeDocumentMoniker": "Models.cs",
@@ -66,7 +58,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -90,7 +82,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
@@ -103,20 +95,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAxwBQAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAqwBIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-05T20:17:02.737Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-05T20:17:02.737Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "CheezAPI.csproj",
               "DocumentMoniker": "C:\\Users\\tooma\\coding\\csharp\\cheezburger\\CheezAPI.csproj",
               "RelativeDocumentMoniker": "CheezAPI.csproj",
