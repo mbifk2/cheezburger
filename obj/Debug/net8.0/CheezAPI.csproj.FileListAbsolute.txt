@@ -518,3 +518,4 @@ C:\Users\tooma\coding\csharp\cheezburger\obj\Debug\net8.0\refint\CheezAPI.dll
 C:\Users\tooma\coding\csharp\cheezburger\obj\Debug\net8.0\CheezAPI.pdb
 C:\Users\tooma\coding\csharp\cheezburger\obj\Debug\net8.0\CheezAPI.genruntimeconfig.cache
 C:\Users\tooma\coding\csharp\cheezburger\obj\Debug\net8.0\ref\CheezAPI.dll
+C:\Users\tooma\coding\csharp\cheezburger\bin\Debug\net8.0\System.ClientModel.dll
