@@ -99,10 +99,12 @@ namespace CheezAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseAuthorization();
             app.MapControllers();
+
             app.Run();
         }
     }
