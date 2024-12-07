@@ -56,7 +56,7 @@ namespace CheezAPI
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.Cookie.Name = "jwt";
+                options.Cookie.Name = "refresh_token";
                 options.Events = new CookieAuthenticationEvents
                 {
                     OnValidatePrincipal = async context =>

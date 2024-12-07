@@ -44,7 +44,6 @@ namespace CheezAPI.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
             };
 
@@ -76,6 +75,7 @@ namespace CheezAPI.Controllers
             return Ok(new { message = "Logged in successfully.", access_token = encodedAccessToken });
         }
 
+        [Authorize]
         [HttpPost("refresh")]
         public IActionResult RefreshToken()
         {
@@ -120,7 +120,7 @@ namespace CheezAPI.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
@@ -142,8 +142,8 @@ namespace CheezAPI.Controllers
         }
 
 
-            // GET: api/v1/users 200 OK
-            [HttpGet]
+        // GET: api/v1/users 200 OK
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
