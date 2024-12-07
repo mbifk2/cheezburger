@@ -14,6 +14,15 @@ namespace CheezAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
+
             builder.Services.AddDbContext<CheezContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CheezDB"))); // enter server in the json 
 
@@ -70,6 +79,9 @@ namespace CheezAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("AllowAllOrigins");
+
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();

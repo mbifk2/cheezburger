@@ -3,7 +3,7 @@
     "mssql1": {
       "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/CheezAPI20241207133934/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsCheezDB_B9AB246F5F",
       "secretStore": "AzureAppSettings",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/cheez-server/databases/cheez-database",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/cheez-db-server/databases/cheez-db",
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:CheezDB",
       "dynamicId": null
