@@ -44,6 +44,7 @@ namespace CheezAPI.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
             };
 
@@ -60,7 +61,7 @@ namespace CheezAPI.Controllers
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,  
-                expires: DateTime.Now.AddMinutes(1440),
+                expires: DateTime.Now.AddDays(7),
                 signingCredentials: credentials
             );
 
@@ -70,7 +71,7 @@ namespace CheezAPI.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.Now.AddMinutes(1440)
+                Expires = DateTime.Now.AddDays(7)
             });
             return Ok(new { message = "Logged in successfully.", access_token = encodedAccessToken });
         }
