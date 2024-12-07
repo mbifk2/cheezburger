@@ -31,7 +31,6 @@ namespace CheezAPI
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings["Issuer"],
                     ValidAudience = jwtSettings["Audience"],
@@ -49,33 +48,6 @@ namespace CheezAPI
                     {
                         context.Response.StatusCode = 403;
                         return Task.CompletedTask;
-                    }
-                };
-            });
-
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.Cookie.Name = "refresh_token";
-                options.Events = new CookieAuthenticationEvents
-                {
-                    OnValidatePrincipal = async context =>
-                    {
-                        var cookie = context.Request.Cookies["refresh_token"];
-                        if (string.IsNullOrEmpty(cookie)) return;
-
-                        try
-                        {
-                            var tokenHandler = new JwtSecurityTokenHandler();
-                            var token = tokenHandler.ReadJwtToken(cookie);
-                            var userId = token.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
-
-                            if (string.IsNullOrEmpty(userId)) context.RejectPrincipal();
-                        }
-                        catch (Exception)
-                        {
-                            context.RejectPrincipal();
-                        }
                     }
                 };
             });
@@ -98,11 +70,9 @@ namespace CheezAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseRouting();
-            app.UseAuthorization();
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
 
             app.Run();

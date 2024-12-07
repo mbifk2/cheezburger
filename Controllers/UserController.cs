@@ -28,14 +28,8 @@ namespace CheezAPI.Controllers
             _config = config;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        private string GenerateToken(User user)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginDto.Username);
-
-            if (user == null) return Unauthorized("User doesn't exist.");
-            if (!_pws.VerifyPassword(user.PasswordHash, loginDto.Password)) return Unauthorized("Invalid password.");
-
             var jwtSettings = _config.GetSection("JwtSettings");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -54,12 +48,11 @@ namespace CheezAPI.Controllers
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials
             );
-            var encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken);
 
             var refreshToken = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
-                claims: claims,  
+                claims: claims,
                 expires: DateTime.Now.AddDays(7),
                 signingCredentials: credentials
             );
@@ -72,7 +65,19 @@ namespace CheezAPI.Controllers
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTime.Now.AddDays(7)
             });
-            return Ok(new { message = "Logged in successfully.", access_token = encodedAccessToken });
+            return new JwtSecurityTokenHandler().WriteToken(accessToken);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == loginDto.Username);
+
+            if (user == null) return Unauthorized("User doesn't exist.");
+            if (!_pws.VerifyPassword(user.PasswordHash, loginDto.Password)) return Unauthorized("Invalid password.");
+
+            var token = GenerateToken(user);
+            return Ok(new { Token = token });
         }
 
         [Authorize]
@@ -130,7 +135,7 @@ namespace CheezAPI.Controllers
                 Secure = true,
                 SameSite = SameSiteMode.Strict
             });
-            return Ok(new { message = "Logged out successfully." });
+            return Ok();
         }
 
         [Authorize]
