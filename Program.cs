@@ -61,7 +61,7 @@ namespace CheezAPI
                 {
                     OnValidatePrincipal = async context =>
                     {
-                        var cookie = context.Request.Cookies["jwt"];
+                        var cookie = context.Request.Cookies["refresh_token"];
                         if (string.IsNullOrEmpty(cookie)) return;
 
                         try
