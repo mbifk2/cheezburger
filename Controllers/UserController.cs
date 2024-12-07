@@ -51,7 +51,7 @@ namespace CheezAPI.Controllers
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(15),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials
             );
             var encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken);
