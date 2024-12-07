@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CheezAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aa0985a03ed65527f68ab1241888b10b6382d9ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7fb2b529f750255acded1be58db11655009ebaf")]
 [assembly: System.Reflection.AssemblyProductAttribute("CheezAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CheezAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
