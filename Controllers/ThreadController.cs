@@ -30,7 +30,7 @@ namespace CheezAPI.Controllers
             {
                 return NotFound("Topic not found.");
             }
-            var fthreads = await _context.Threads.Where(f => f.TopicID == TopicID).ToListAsync();
+            var fthreads = await _context.Threads.Where(f => f.TopicID == TopicID).OrderByDescending(f => f.CreatedAt).ToListAsync();
 
             return Ok(fthreads.Select(f => new ThreadDto
             {
@@ -67,6 +67,28 @@ namespace CheezAPI.Controllers
                 VerifiedOnly = thread.VerifiedOnly,
                 CreatorId = thread.CreatorID
             });
+        }
+
+        [HttpGet("latest")]
+        public async Task<ActionResult<IEnumerable<ThreadDto>>> GetLatestThreads(int TopicID)
+        {
+            var topic = await _context.Topics.FindAsync(TopicID);
+            if (topic == null)
+            {
+                return NotFound("Topic not found.");
+            }
+
+            var threads = await _context.Threads.Where(f => f.TopicID == TopicID).OrderByDescending(f => f.CreatedAt).Take(5).ToListAsync();
+
+            return Ok(threads.Select(f => new ThreadDto
+            {
+                ThreadID = f.FthreadID,
+                Title = f.Title,
+                CreatedAt = f.CreatedAt,
+                IsLocked = f.IsLocked,
+                VerifiedOnly = f.VerifiedOnly,
+                CreatorId = f.CreatorID
+            }));
         }
 
         //POST: api/v1/topics/{TopicID}/threads 201 Created

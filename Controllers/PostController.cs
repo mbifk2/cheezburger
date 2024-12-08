@@ -101,6 +101,9 @@ namespace CheezAPI.Controllers
 
             var loggedIn = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
+            topic.CreatedAt = DateTime.Now;
+            thread.CreatedAt = DateTime.Now;
+
             var post = new Post
             {
                 Content = postCreateDto.Content,
