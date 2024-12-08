@@ -41,6 +41,7 @@ namespace CheezAPI.Controllers
 
             return Ok(posts.Select(p => new PostGetDto
             {
+                PostID = p.PostID,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
                 CreatorID = p.CreatorID,
@@ -73,6 +74,7 @@ namespace CheezAPI.Controllers
 
             return Ok(new PostGetDto
             {
+                PostID = post.PostID,
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
                 CreatorID = post.CreatorID 
@@ -112,6 +114,7 @@ namespace CheezAPI.Controllers
 
             return CreatedAtAction(nameof(GetPost), new { TopicID, ThreadID, id = post.PostID }, new PostGetDto
             {
+                PostID = post.PostID,
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
                 CreatorID = post.CreatorID

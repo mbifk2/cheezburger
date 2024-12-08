@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CheezAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ffc6e4e59bb92b029397521d8798626007993375")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62201eb7f4f16037245af52f32857fa1696c341f")]
 [assembly: System.Reflection.AssemblyProductAttribute("CheezAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CheezAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

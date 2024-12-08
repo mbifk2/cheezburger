@@ -90,6 +90,7 @@
 
         public class PostGetDto
         {
+            public int PostID { get; set; }
             public int CreatorID { get; set; }
             public string Content { get; set; }
             public DateTime CreatedAt { get; set; }

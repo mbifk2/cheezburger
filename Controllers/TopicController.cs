@@ -97,7 +97,8 @@ namespace CheezAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetTopic), new { id = topic.TopicID}, new TopicDto 
-            { 
+            {
+                TopicID = topic.TopicID,
                 Title = topic.Title,
                 Description = topic.Description, 
                 CreatedAt = topic.CreatedAt,

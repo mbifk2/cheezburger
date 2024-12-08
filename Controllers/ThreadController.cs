@@ -105,6 +105,7 @@ namespace CheezAPI.Controllers
 
             return CreatedAtAction(nameof(GetThread), new { TopicID = TopicID, id = thread.FthreadID }, new ThreadDto
             {
+                ThreadID = thread.FthreadID,
                 Title = thread.Title,
                 CreatedAt = thread.CreatedAt,
                 IsLocked = thread.IsLocked,
