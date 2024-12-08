@@ -34,6 +34,7 @@ namespace CheezAPI.Controllers
 
             return Ok(fthreads.Select(f => new ThreadDto
             {
+                ThreadID = f.FthreadID,
                 Title = f.Title,
                 CreatedAt = f.CreatedAt,
                 IsLocked = f.IsLocked,
@@ -59,6 +60,7 @@ namespace CheezAPI.Controllers
             }
             return Ok(new ThreadDto
             {
+                ThreadID = thread.FthreadID,
                 Title = thread.Title,
                 CreatedAt = thread.CreatedAt,
                 IsLocked = thread.IsLocked,

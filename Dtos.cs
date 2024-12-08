@@ -8,6 +8,7 @@
             public string Username { get; set; }
             //public string Email { get; set; }
             public DateTime CreatedAt { get; set; }
+            public string PFP_URL { get; set; }
         }
 
         public class UserCreateDto
@@ -22,6 +23,7 @@
             public string? Username { get; set; }
             public string? Email { get; set; }
             public string? Password { get; set; }
+            public string? PFP_URL { get; set; }
             public bool? IsBanned { get; set; }
             public bool? IsAdmin { get; set; }
             public bool? IsVerified { get; set; }
@@ -30,6 +32,7 @@
 
         public class TopicDto
         {
+            public int TopicID { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public DateTime CreatedAt { get; set; }
@@ -53,6 +56,7 @@
 
         public class ThreadDto
         {
+            public int ThreadID { get; set; }
             public string Title { get; set; }
             public DateTime CreatedAt { get; set; }
             public bool IsLocked { get; set; }

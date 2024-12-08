@@ -32,6 +32,7 @@ namespace CheezAPI.Controllers
 
             return Ok(topics.Select(t => new TopicDto
             { 
+                TopicID = t.TopicID,
                 Title = t.Title,
                 Description = t.Description,
                 CreatedAt = t.CreatedAt,
@@ -50,10 +51,26 @@ namespace CheezAPI.Controllers
             }
             return Ok(new TopicDto
             {
+                TopicID = topic.TopicID,
                 Title = topic.Title,
                 Description = topic.Description,
                 CreatorId = topic.CreatorID
             });
+        }
+
+        [HttpGet("latest")]
+        public async Task<ActionResult<IEnumerable<TopicDto>>> GetLatestTopics()
+        {
+            var topics = await _context.Topics.OrderByDescending(t => t.CreatedAt).Take(5).ToListAsync();
+
+            return Ok(topics.Select(t => new TopicDto
+            {
+                TopicID = t.TopicID,
+                Title = t.Title,
+                Description = t.Description,
+                CreatedAt = t.CreatedAt,
+                CreatorId = t.CreatorID
+            }));
         }
 
         //POST: api/v1/topics 201 Created

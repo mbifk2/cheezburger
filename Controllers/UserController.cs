@@ -157,6 +157,7 @@ namespace CheezAPI.Controllers
             {
                 UserID = u.UserID,
                 Username = u.Username,
+                PFP_URL = u.PFP_URL,
                 CreatedAt = u.CreatedAt
             }));
         }
@@ -174,6 +175,7 @@ namespace CheezAPI.Controllers
             {
                 UserID = user.UserID,
                 Username = user.Username,
+                PFP_URL = user.PFP_URL,
                 CreatedAt = user.CreatedAt
             });
         }
@@ -268,6 +270,7 @@ namespace CheezAPI.Controllers
 
             if (!string.IsNullOrEmpty(userUpdateDto.Username) || user.Username == userUpdateDto.Username) user.Username = userUpdateDto.Username;
             if (!string.IsNullOrEmpty(userUpdateDto.Email) || user.Email == userUpdateDto.Email) user.Email = userUpdateDto.Email;
+            if (!string.IsNullOrEmpty(userUpdateDto.PFP_URL) || user.PFP_URL == userUpdateDto.PFP_URL) user.PFP_URL = userUpdateDto.PFP_URL;
 
             if (userUpdateDto.IsBanned.HasValue) user.IsBanned = userUpdateDto.IsBanned.Value;
             if (userUpdateDto.IsAdmin.HasValue) user.IsAdmin = userUpdateDto.IsAdmin.Value;
