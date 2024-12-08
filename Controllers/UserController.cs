@@ -272,6 +272,12 @@ namespace CheezAPI.Controllers
             if (!string.IsNullOrEmpty(userUpdateDto.Email) || user.Email == userUpdateDto.Email) user.Email = userUpdateDto.Email;
             if (!string.IsNullOrEmpty(userUpdateDto.PFP_URL) || user.PFP_URL == userUpdateDto.PFP_URL) user.PFP_URL = userUpdateDto.PFP_URL;
 
+            // validate the URL of the profile picture
+            if (!string.IsNullOrEmpty(userUpdateDto.PFP_URL) && !Uri.TryCreate(userUpdateDto.PFP_URL, UriKind.Absolute, out _))
+            {
+                return UnprocessableEntity("Invalid URL format.");
+            }
+
             if (userUpdateDto.IsBanned.HasValue) user.IsBanned = userUpdateDto.IsBanned.Value;
             if (userUpdateDto.IsAdmin.HasValue) user.IsAdmin = userUpdateDto.IsAdmin.Value;
             if (userUpdateDto.IsVerified.HasValue) user.IsVerified = userUpdateDto.IsVerified.Value;
