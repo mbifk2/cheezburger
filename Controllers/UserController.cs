@@ -227,6 +227,7 @@ namespace CheezAPI.Controllers
                 Email = userCreateDto.Email,
                 PasswordHash = hashedPassword,
                 CreatedAt = DateTime.Now,
+                PFP_URL = "https://files.catbox.moe/vcx6ms.jpg",
                 IsOnline = true,
                 IsVerified = false
             };
@@ -239,6 +240,7 @@ namespace CheezAPI.Controllers
                 UserID = user.UserID,
                 Username = user.Username,
                 CreatedAt = user.CreatedAt,
+                PFP_URL = user.PFP_URL,
             };
 
             return CreatedAtAction(nameof(GetUser), new { id = user.UserID }, userDto);
@@ -272,15 +274,30 @@ namespace CheezAPI.Controllers
             if (!string.IsNullOrEmpty(userUpdateDto.Email) || user.Email == userUpdateDto.Email) user.Email = userUpdateDto.Email;
             if (!string.IsNullOrEmpty(userUpdateDto.PFP_URL) || user.PFP_URL == userUpdateDto.PFP_URL) user.PFP_URL = userUpdateDto.PFP_URL;
 
+            if (!string.IsNullOrEmpty(userUpdateDto.Email) && !Regex.IsMatch(userUpdateDto.Email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+            {
+                return UnprocessableEntity("Invalid email format.");
+            }
+
             // validate the URL of the profile picture
             if (!string.IsNullOrEmpty(userUpdateDto.PFP_URL) && !Uri.TryCreate(userUpdateDto.PFP_URL, UriKind.Absolute, out _))
             {
                 return UnprocessableEntity("Invalid URL format.");
             }
 
-            if (userUpdateDto.IsBanned.HasValue) user.IsBanned = userUpdateDto.IsBanned.Value;
-            if (userUpdateDto.IsAdmin.HasValue) user.IsAdmin = userUpdateDto.IsAdmin.Value;
-            if (userUpdateDto.IsVerified.HasValue) user.IsVerified = userUpdateDto.IsVerified.Value;
+            if (User.IsInRole("Admin"))
+            {
+                if (userUpdateDto.IsBanned.HasValue) user.IsBanned = userUpdateDto.IsBanned.Value;
+                if (userUpdateDto.IsAdmin.HasValue) user.IsAdmin = userUpdateDto.IsAdmin.Value;
+                if (userUpdateDto.IsVerified.HasValue) user.IsVerified = userUpdateDto.IsVerified.Value;
+            }
+            else
+            {
+                if (userUpdateDto.IsBanned.HasValue || userUpdateDto.IsAdmin.HasValue || userUpdateDto.IsVerified.HasValue)
+                {
+                    return Forbid("You are not allowed to change these fields.");
+                }
+            }
 
             var hashedPassword = "";
             if (!string.IsNullOrEmpty(userUpdateDto.Password))
