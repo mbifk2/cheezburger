@@ -24,6 +24,14 @@ namespace CheezAPI
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });
+
+                options.AddPolicy("AllowPublicFrontend", builder =>
+                {
+                    builder.WithOrigins("https://witty-smoke-098c1b303.4.azurestaticapps.net")
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
             });
 
 
@@ -77,14 +85,10 @@ namespace CheezAPI
             builder.Services.AddScoped<IPasswordService, PasswordService>();
 
             var app = builder.Build();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
+            
             app.UseCors("AllowLocalFrontend");
+            app.UseCors("AllowPublicFrontend");
+
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
