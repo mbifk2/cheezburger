@@ -62,7 +62,7 @@ namespace CheezAPI.Controllers
             {
                 HttpOnly = true,
                 Secure = false,
-                SameSite = SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.Now.AddDays(7)
             });
             return new JwtSecurityTokenHandler().WriteToken(accessToken);
