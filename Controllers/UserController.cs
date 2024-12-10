@@ -61,8 +61,8 @@ namespace CheezAPI.Controllers
             Response.Cookies.Append("refresh_token", encodedRefreshToken, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
                 Expires = DateTime.Now.AddDays(7)
             });
             return new JwtSecurityTokenHandler().WriteToken(accessToken);
