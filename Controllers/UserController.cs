@@ -62,6 +62,7 @@ namespace CheezAPI.Controllers
             {
                 HttpOnly = true,
                 Secure = false,
+                Path = "/",
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.Now.AddDays(7)
             });
