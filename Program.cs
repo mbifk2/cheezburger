@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace CheezAPI
 {
@@ -16,9 +17,12 @@ namespace CheezAPI
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllOrigins", builder =>
+                options.AddPolicy("AllowLocalFrontend", builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    builder.WithOrigins("http://localhost:8080")
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
                 });
             });
 
@@ -80,8 +84,7 @@ namespace CheezAPI
                 app.UseSwaggerUI();
             }
 
-            app.UseCors("AllowAllOrigins");
-
+            app.UseCors("AllowLocalFrontend");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
