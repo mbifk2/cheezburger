@@ -28,7 +28,7 @@ namespace CheezAPI.Controllers
             _config = config;
         }
 
-        private string GenerateToken(User user)
+        private (string, string) GenerateToken(User user)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
@@ -66,7 +66,7 @@ namespace CheezAPI.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.Now.AddDays(7)
             });
-            return new JwtSecurityTokenHandler().WriteToken(accessToken);
+            return (new JwtSecurityTokenHandler().WriteToken(accessToken), encodedRefreshToken);
         }
 
         [HttpPost("login")]
@@ -77,8 +77,9 @@ namespace CheezAPI.Controllers
             if (user == null) return Unauthorized("User doesn't exist.");
             if (!_pws.VerifyPassword(user.PasswordHash, loginDto.Password)) return Unauthorized("Invalid password.");
 
-            var token = GenerateToken(user);
-            return Ok(new { Token = token });
+            string access_token, refresh_token;
+            (access_token, refresh_token) = GenerateToken(user);
+            return Ok(new { access_token, refresh_token });
         }
 
         [Authorize]
