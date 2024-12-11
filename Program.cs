@@ -86,8 +86,8 @@ namespace CheezAPI
 
             var app = builder.Build();
             
-            app.UseCors("AllowLocalFrontend");
             app.UseCors("AllowPublicFrontend");
+            app.UseCors("AllowLocalFrontend");
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
