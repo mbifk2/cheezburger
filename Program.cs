@@ -32,6 +32,14 @@ namespace CheezAPI
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });
+
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
             });
 
 
@@ -85,9 +93,8 @@ namespace CheezAPI
             builder.Services.AddScoped<IPasswordService, PasswordService>();
 
             var app = builder.Build();
-            
-            app.UseCors("AllowPublicFrontend");
-            app.UseCors("AllowLocalFrontend");
+
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
