@@ -17,9 +17,9 @@ namespace CheezAPI
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", builder =>
+                options.AddPolicy("AllowFrontend", builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("https://localhost:8080", "http://localhost:8080", "https://witty-smoke-098c1b303.4.azurestaticapps.net")
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
@@ -78,7 +78,7 @@ namespace CheezAPI
 
             var app = builder.Build();
 
-            app.UseCors("AllowAll");
+            app.UseCors("AllowFrontend");
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
