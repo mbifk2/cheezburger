@@ -19,7 +19,7 @@ namespace CheezAPI
             {
                 options.AddPolicy("AllowLocalFrontend", builder =>
                 {
-                    builder.WithOrigins("http://localhost:8080")
+                    builder.WithOrigins("https://localhost:8080")
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
