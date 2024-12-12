@@ -144,8 +144,15 @@ namespace CheezAPI.Controllers
         [HttpGet("profile")]
         public IActionResult GetProfile()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return Ok(new { userId });
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = _context.Users.Find(userId);
+            return Ok(new UserDto
+            {
+                UserID = user.UserID,
+                Username = user.Username,
+                PFP_URL = user.PFP_URL,
+                CreatedAt = user.CreatedAt
+            });
         }
 
 
