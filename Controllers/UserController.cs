@@ -150,6 +150,7 @@ namespace CheezAPI.Controllers
             {
                 UserID = user.UserID,
                 Username = user.Username,
+                IsAdmin = user.IsAdmin,
                 PFP_URL = user.PFP_URL,
                 CreatedAt = user.CreatedAt
             });
@@ -166,6 +167,7 @@ namespace CheezAPI.Controllers
             {
                 UserID = u.UserID,
                 Username = u.Username,
+                IsAdmin = u.IsAdmin,
                 PFP_URL = u.PFP_URL,
                 CreatedAt = u.CreatedAt
             }));
@@ -184,6 +186,7 @@ namespace CheezAPI.Controllers
             {
                 UserID = user.UserID,
                 Username = user.Username,
+                IsAdmin = user.IsAdmin,
                 PFP_URL = user.PFP_URL,
                 CreatedAt = user.CreatedAt
             });
