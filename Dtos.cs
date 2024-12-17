@@ -12,6 +12,16 @@
             public string PFP_URL { get; set; }
         }
 
+        public class Profile
+        {
+            public int UserID { get; set; }
+            public string Username { get; set; }
+            public string Email { get; set; }
+            public bool IsAdmin { get; set; }
+            public DateTime CreatedAt { get; set; }
+            public string PFP_URL { get; set; }
+        }
+
         public class UserCreateDto
         {
             public string Username { get; set; }

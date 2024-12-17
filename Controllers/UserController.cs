@@ -146,10 +146,11 @@ namespace CheezAPI.Controllers
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var user = _context.Users.Find(userId);
-            return Ok(new UserDto
+            return Ok(new Profile
             {
                 UserID = user.UserID,
                 Username = user.Username,
+                Email = user.Email,
                 IsAdmin = user.IsAdmin,
                 PFP_URL = user.PFP_URL,
                 CreatedAt = user.CreatedAt
