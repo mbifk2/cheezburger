@@ -19,7 +19,7 @@ namespace CheezAPI
             {
                 options.AddPolicy("AllowFrontend", builder =>
                 {
-                    builder.WithOrigins("https://localhost:8080", "http://localhost:8080", "https://witty-smoke-098c1b303.4.azurestaticapps.net", "http://localhost:5173")
+                    builder.WithOrigins("https://localhost:8080", "http://localhost:8080", "https://witty-smoke-098c1b303.4.azurestaticapps.net", "http://localhost:5173", "https://zealous-plant-03aaed103.4.azurestaticapps.net")
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
