@@ -53,7 +53,7 @@ namespace CheezAPI.Controllers
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(7),
+                expires: DateTime.Now.AddDays(30),
                 signingCredentials: credentials
             );
 
@@ -64,7 +64,7 @@ namespace CheezAPI.Controllers
                 Secure = true,
                 Path = "/",
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.Now.AddDays(7)
+                Expires = DateTime.Now.AddDays(30)
             });
             return (new JwtSecurityTokenHandler().WriteToken(accessToken), encodedRefreshToken);
         }
@@ -135,7 +135,7 @@ namespace CheezAPI.Controllers
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict
+                SameSite = SameSiteMode.None
             });
             return Ok();
         }
