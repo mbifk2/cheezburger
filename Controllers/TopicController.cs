@@ -93,6 +93,11 @@ namespace CheezAPI.Controllers
                 CreatedAt = DateTime.UtcNow
             };
 
+            if (await _context.Topics.AnyAsync(t => t.Title == topic.Title))
+            {
+                return Conflict("Topic title already used.");
+            }
+
             _context.Topics.Add(topic);
             await _context.SaveChangesAsync();
 
