@@ -9,7 +9,7 @@ info:
     url: 'https://opensource.org/licenses/MIT'
   version: '1.0'
 servers:
-  - url: https://localhost:7203/api/v1/
+  - url: https://cheezapi20241207133934.azurewebsites.net/api/v1
 tags:
   - name: User
     description: Related to user management
@@ -29,13 +29,19 @@ paths:
       operationId: GetUsers
       responses:
         '200':
-          description: A JSON array of user names, emails and creation dates
+          description: A JSON array of user data
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserDto'
+              example:
+                userID: 1
+                username: "user1"
+                isAdmin: false
+                PFP_URL: "https://example.com/pfp.jpg"
+                createdAt: "2024-12-01T12:00:00Z"
     post:
       tags:
         - User
@@ -48,6 +54,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserCreateDto'
+              example:
+                - username: "user1"
+                - email: "example@example.com"
+                - password: "password123"
       responses:
         '201':
           description: JSON object of the created user
@@ -55,12 +65,126 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserCreateDto'
+              example:
+              - userID: 1
+              - username: "user1"
+              - createdAt: "2024-12-01T12:00:00Z"
+              - PFP_URL: "https://example.com/pfp.jpg"
         '400':
           description: Bad request (invalid input data)
         '422':
           description: Unprocessable entity (password/username is too short or too long)
         '409':
           description: Conflict (user with the same username or email already exists)'
+  /users/login:
+    post:
+      tags:
+        - User
+      summary: Login
+      description: Logs in a user.
+      operationId: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+            example:
+              - username: "user1"
+              - password: "password123"
+      responses:
+        '200':
+          description: the access and refresh tokens
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+              example:
+                - refresh_token: "token_here"
+                - access_token: "token_here"                    
+        '400':
+          description: Bad request (invalid input data)
+        '401':
+          description: Unauthorized (invalid username or password)
+
+  /users/refresh:
+    post:
+      tags:
+        - User
+      summary: Refresh token
+      description: Refreshes the access token.
+      operationId: RefreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: the access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+              example:
+                - access_token: "token_here"                    
+        '400':
+          description: Bad request (invalid input data)
+        '401':
+          description: Unauthorized (invalid refresh token)
+      security:
+        - bearerAuth: []
+
+  /users/logout:
+    post:
+      tags:
+        - User
+      summary: Logout
+      description: Logs out a user.
+      operationId: Logout
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized (user is not signed in)
+  /users/profile:
+    get:
+      tags:
+        - User
+      summary: Get user profile
+      description: Returns the profile of the signed in user.
+      operationId: GetProfile
+      responses:
+        '200':
+          description: JSON object of the user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+              example:
+                - UserID: 1
+                - Username: "user1"
+                - Email: "example@example.com"
+                - IsAdmin: false
+                - CreatedAt: "2024-12-01T12:00:00Z"
+                - PFP_URL: "https://example.com/pfp.png"
+        '401':
+          description: Unauthorized (user is not signed in)
+      security:
+        - bearerAuth: []
+
   /users/{id}:
     get:
       tags:
@@ -75,6 +199,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDto'
+              example:
+                - userID: 1
+                - username: "user1"
+                - isAdmin: false
+                - PFP_URL: "https://example.com/pfp.jpg"
+                - createdAt: "2024-12-01T12:00:00Z"
         '404':
           description: Not found
     put:
@@ -89,11 +219,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserUpdateDto'
+            example:
+              - username: "user1_2"
+              - email: "example@example.com"
+              - password: "password234"
+              - isAdmin: true
+              - PFP_URL: "https://example.com/pfp2.png"
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not an admin and tries to update another user)
+        '404':
+          description: Not found (user with the given ID does not exist)
         '409':
           description: Conflict (user with the same username or email already exists)
+        '422':
+          description: Unprocessable entity (email and/or profile picture URL are invalid)
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - User
@@ -103,8 +249,14 @@ paths:
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not an admin and tries to delete another user)
         '404':
           description: Not found
+      security:
+        - bearerAuth: []
   /topics:
     get:
       tags:
@@ -121,6 +273,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TopicDto'
+              example:
+                - topicID: 1
+                - title: "topic1"
+                - description: "description here"
+                - createdAt: "2024-12-01T12:00:00Z"
+                - CreatorId: 1
     post:
       tags: 
         - Topic
@@ -133,6 +291,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TopicCreateDto'
+            example:
+              - title: "topic1"
+              - description: "description here"
       responses:
         '201':
           description: JSON object of the created topic
@@ -140,11 +301,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TopicCreateDto'
+              example:
+                - title: "topic1"
+                - description: "description here"
+                - creatorId: 1
         '400':
           description: Bad request (invalid or empty input data)
+        '401':
+          description: Unauthorized (user is not signed in)
         '409':
           description: Conflict (topic with the same title already exists)
-  /topics/{id}:
+      security:
+        - bearerAuth: []
+  /topics/{topicID}:
     get:
       tags:
         - Topic
@@ -158,6 +327,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TopicDto'
+              example:
+                - topicID: 1
+                - title: "topic1"
+                - description: "description here"
+                - createdAt: "2024-12-01T12:00:00Z"
+                - CreatorId: 1
         '404':
           description: Not found
     put:
@@ -172,13 +347,22 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TopicUpdateDto'
+            example: 
+              - title: "topic1"
+              - description: "description here"
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not the creator of the topic and not an admin)
         '404':
           description: Not found (topic with the given ID does not exist)
         '409':
           description: Conflict (topic with the same title already exists)
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - Topic
@@ -188,9 +372,15 @@ paths:
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not the creator of the topic and not an admin)
         '404':
           description: Not found
-  /topics/{id}/threads:
+      security:
+        - bearerAuth: []
+  /topics/{topicID}/threads:
     get:
       tags:
         - Thread
@@ -206,6 +396,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ThreadDto'
+              example:
+                - threadID: 1
+                - title: "thread1"
+                - isLocked: false
+                - createdAt: "2024-12-01T12:00:00Z"
+                - creatorId: 1
         '404':
           description: Not found (topic with the given ID does not exist)
     post:
@@ -220,6 +416,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ThreadCreateDto'
+            example:
+              - title: "thread1"
       responses:
         '201':
           description: JSON object of the created thread
@@ -227,13 +425,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThreadCreateDto'
+              example:
+                - title: "thread1"
+                - creatorId: 1
         '400':
           description: Bad request (invalid or empty input data)
         '404':
           description: Not found (topic with the given ID does not exist)
         '409':
           description: Conflict (thread with the same title already exists)
-  /topics/{id}/threads/{id2}:
+      security:
+        - bearerAuth: []
+  /topics/{topicID}/threads/{threadID}:
     get:
       tags:
         - Thread
@@ -247,6 +450,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThreadDto'
+              example:
+                - threadID: 1
+                - title: "thread1"
+                - createdAt: "2024-12-01T12:00:00Z"
+                - isLocked: false
+                - creatorId: 1
         '404':
           description: Not found
     put:
@@ -261,13 +470,22 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ThreadUpdateDto'
+            example:
+              - title: "thread1"
+              - isLocked: true
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not the creator of the thread and not an admin)
         '404':
           description: Not found (topic or thread with the given ID does not exist)
         '409':
           description: Conflict (thread with the same title already exists)
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - Thread
@@ -277,9 +495,15 @@ paths:
       responses:
         '204':
           description: No content
+        '401': 
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not the creator of the thread and not an admin)
         '404':
           description: Not found
-  /topics/{id}/threads/{id2}/posts:
+      security:
+        - bearerAuth: []
+  /topics/{topicID}/threads/{threadID}/posts:
     get:
       tags:
         - Post
@@ -295,6 +519,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PostGetDto'
+              example:
+                - postID: 1
+                - creatorId: 1
+                - content: "content here"
+                - createdAt: "2024-12-01T12:00:00Z"
         '404':
           description: Not found (topic or thread with the given ID does not exist)
     post:
@@ -309,6 +538,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PostCreateDto'
+            example:
+              - content: "content here"
       responses:
         '201':
           description: JSON object of the created post
@@ -316,11 +547,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostCreateDto'
+              example:
+                - creatorId: 1
+                - content: "content here"
+                - createdAt: "2024-12-01T12:00:00Z"
         '400':
           description: Bad request (invalid or empty input data)
+        '401':
+          description: Unauthorized (user is not signed in)
         '404':
           description: Not found (topic or thread with the given ID does not exist)
-  /topics/{id}/threads/{id2}/posts/{id3}:
+      security: 
+        - bearerAuth: []
+  /topics/{topicID}/threads/{threadID}/posts/{postID}:
     get:
       tags:
         - Post
@@ -334,6 +573,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostGetDto'
+              example:
+                - postID: 1
+                - creatorId: 1
+                - content: "content here"
+                - createdAt: "2024-12-01T12:00:00Z"
         '404':
           description: Not found (topic, thread or post with the given ID does not exist)
     put:
@@ -348,11 +592,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PostUpdateDto'
+            example:
+              - content: "content here"
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not the creator of the post and not an admin)
         '404':
           description: Not found (topic, thread or post with the given ID does not exist)
+      security:
+        - bearerAuth: []
     delete:
       tags:
         - Post
@@ -362,10 +614,57 @@ paths:
       responses:
         '204':
           description: No content
+        '401':
+          description: Unauthorized (user is not signed in)
+        '403':
+          description: Forbidden (user is not the creator of the post and not an admin)
         '404':
           description: Not found (topic, thread or post with the given ID does not exist)
+      security:
+        - bearerAuth: []
 components:
   schemas:
+    LoginDto:
+      type: object
+      properties:
+        username:
+          type: string
+          nullable: false
+        password:
+          type: string
+          nullable: false
+      required:
+        - username
+        - password
+    Profile:
+      type: object
+      properties:
+        UserID:
+          type: integer
+          format: int32
+        Username:
+          type: string
+          nullable: false
+        Email:
+          type: string
+          format: email
+          nullable: false
+        IsAdmin:
+          type: boolean
+          nullable: false
+        CreatedAt:
+          type: string
+          format: date-time
+        PFP_URL:
+          type: string
+          nullable: false
+      required:
+        - UserID
+        - Username
+        - Email
+        - IsAdmin
+        - CreatedAt
+        - PFP_URL
     UserCreateDto:
       type: object
       properties:
@@ -393,10 +692,22 @@ components:
           format: int32
         username:
           type: string
-          nullable: true
+          nullable: false
+        isAdmin:
+          type: boolean
+          nullable: false
         createdAt:
           type: string
           format: date-time
+        PFP_URL:
+          type: string
+          nullable: false
+      required:
+        - userID
+        - username
+        - isAdmin
+        - createdAt
+        - PFP_URL
     UserUpdateDto:
       type: object
       properties:
@@ -427,11 +738,18 @@ components:
         description:
           type: string
           nullable: true
+        creatorId:
+          type: integer
+          format: int32
       required:
         - title
+        - creatorId
     TopicDto:
       type: object
       properties:
+        topicID:
+          type: integer
+          format: int32
         title:
           type: string
           nullable: true
@@ -441,6 +759,12 @@ components:
         createdAt:
           type: string
           format: date-time
+        creatorId:
+          type: integer
+          format: int32
+      required:
+        - title
+        - creatorId
     TopicUpdateDto:
       type: object
       properties:
@@ -450,27 +774,43 @@ components:
         description:
           type: string
           nullable: true
-        createdAt:
-          type: string
-          format: date-time
+        isHidden:
+          type: boolean
+          nullable: true
+        CreatorId:
+          type: integer
+          format: int32
     ThreadCreateDto:
       type: object
       properties:
         title:
           type: string
           nullable: true
+        creatorId: 
+          type: integer
+          format: int32
+        verifiedOnly:
+          type: boolean
+          nullable: true
       required:
         - title
+        - creatorId
     ThreadDto:
       type: object
       properties:
+        threadID:
+          type: integer
+          format: int32
         title:
           type: string
-          nullable: true
+          nullable: false
         createdAt:
           type: string
           format: date-time
         isLocked:
+          type: boolean
+          nullable: false
+        verifiedOnly:
           type: boolean
           nullable: true
     ThreadUpdateDto:
@@ -482,29 +822,41 @@ components:
         isLocked:
           type: boolean
           nullable: true
+        creatorId:
+          type: integer
+          format: int32
+        verifiedOnly:
+          type: boolean
+          nullable: true
+      required:
+        - creatorId
     PostCreateDto:
       type: object
       properties:
-        userID:
+        creatorId:
           type: integer
           format: int32
         content:
           type: string
-          nullable: true
+          nullable: false
         createdAt:
           type: string
           format: date-time
       required:
-        - userID
+        - creatorId
+        - content
     PostGetDto:
       type: object
       properties:
-        userID:
+        postID:
+          type: integer
+          format: int32
+        creatorId:
           type: integer
           format: int32
         content:
           type: string
-          nullable: true
+          nullable: false
         createdAt:
           type: string
           format: date-time
