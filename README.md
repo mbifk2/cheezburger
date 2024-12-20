@@ -6,7 +6,7 @@
 ## Aprašymas
 - Cheezburger yra paprastas internetinis forumas su temomis(subforumais), gijomis bei komentarais.
 - Forumo API yra sukurtas pasiremiant REST principais.
-- API specifikacija patalpina faile `openapi.yml`.
+- API specifikacija patalpinta faile `openapi.yml`.
 - Projekto realizacijos nuoroda: https://zealous-plant-03aaed103.4.azurestaticapps.net/
 
 ## Realizacijos priemonės
