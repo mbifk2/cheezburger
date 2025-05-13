@@ -2,17 +2,17 @@
 ## Svarbi informacija
 - Šis darbas atliktas Kauno Technologijos Universiteto informatikos fakulteto moduliui `T120B165 Saityno taikomųjų programų projektavimas`.
 - Darbą atliko IFK-2 grupės studentas Matas Bingelis.
-- Šioje saugykloje laikomas tik API projektas. UI projektas yra šioje saugykloje: https://github.com/matbin532/cheez-frontend
+- Šioje saugykloje laikomas tik backend projektas. Frontend projektas yra šioje saugykloje: https://github.com/mbifk2/cheez-frontend (Talpykla šiuo metu privati)
 ## Aprašymas
-- Cheezburger yra paprastas internetinis forumas su temomis(subforumais), gijomis bei komentarais.
+- Cheezburger yra paprastas internetinis forumas su temomis(subforumais), gijomis(threads) bei komentarais.
 - Forumo API yra sukurtas pasiremiant REST principais.
 - API specifikacija patalpinta faile `openapi.yml`.
-- Projekto realizacijos nuoroda: https://zealous-plant-03aaed103.4.azurestaticapps.net/
+- Projekto realizacijos nuoroda: https://zealous-plant-03aaed103.4.azurestaticapps.net/ (Nebeaktyvi)
 
 ## Realizacijos priemonės
-- API: C#
+- Backend: C#
 - Duomenų bazė: Microsoft SQL Server (Azure SQL)
-- UI: Vue.js (Vue3)
+- Frontend: Vue.js (Vue3)
 - Talpinimas saityne: Microsoft Azure
 
 ## Sistemos paskirtis
